@@ -23,6 +23,7 @@
     "chai": "2.2.0",
     "lab": "5.15.2",
     "pre-commit": "1.1.2",
+    "proxyquire": "^1.7.9",
     "semistandard": "7.0.3",
     "sinon": "1.16.1"
   },

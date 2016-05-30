@@ -11,6 +11,7 @@ var seneca = require('seneca')(),
   _ = require('lodash'),
   async = require('async'),
   sinon = require('sinon'),
+  proxyquire = require('proxyquire'),
   lab = exports.lab = require('lab').script();
 
 var role = "cd-events";
@@ -156,6 +157,27 @@ lab.experiment('Events Microservice test', function () {
           done(null, event);
         });
       });
+    });
+  });
+
+  lab.experiment('Cron', function () {
+    lab.test('runs send reminders every 30 mins', function (done) {
+      // ARRANGE
+      var scheduleSpy = sinon.spy();
+      var cron = proxyquire('../lib/cron.js', {
+        'node-schedule': {
+          scheduleJob: scheduleSpy
+        },
+        './send-reminder-emails': function () { return 'callback'; }
+      });
+
+      // ACT
+      cron();
+
+      // ASSERT
+      expect(scheduleSpy.calledOnce).to.equal(true);
+      expect(scheduleSpy.getCall(0).calledWith('0,30 * * * *', 'callback')).to.equal(true);
+      done();
     });
   });
 

@@ -24,6 +24,4 @@ require('./migrate-psql-db.js')(function (err) {
     .client({type: 'web', port: 10301, pin: 'role:cd-dojos,cmd:*'})
     .client({type: 'web', port: 10303, pin: 'role:cd-users,cmd:*'})
     .client({type: 'web', port: 10303, pin: 'role:cd-profiles,cmd:*'});
-
-  require('./lib/cron.js')(seneca);
 });
